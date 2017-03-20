@@ -1,6 +1,6 @@
 ﻿COSC 480 – Data Science for Social Good Major Project
 
-Will Ferrin
+Will Ferrin *x*
 Ryan Vreeland
 Jonathan Hunt
 Dillon Fitzgerald
