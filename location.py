@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Fri Apr 07 13:37:55 2017
@@ -26,3 +27,5 @@ y = [1,3,4,2,7,8,9,5,4]
 
 #plt.plot(x,y)
 plt.scatter(lon,lat)
+
+#HELLO?
