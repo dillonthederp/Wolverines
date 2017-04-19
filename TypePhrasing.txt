@@ -10,6 +10,13 @@ Shut-in Gas Well
 Oil & Gas
 Gas Orphaned
 Waste Disposal
+D&A --> means dry and abandoned
+O&G-P&A
+INJ-P&A --> injection well plugged and abandoned
+OIL-P&A
+SWD-P&A
+
+
 
 Status:
 Abandoned
@@ -17,8 +24,9 @@ Orphaned
 Active
 UNABLE TO LOCATE WELL-NO PLUGGED AND ABANDONED
 
-Some types that I found exist, which I can't find an equivalent wording
 
+
+Some types that I found exist, which I can't find an equivalent wording
 Types:
 Gas Storage Observation Wells
 Gas Storage (I am assuming they are different since the same state used both phrases)
@@ -47,6 +55,10 @@ Water Source
 Observation
 Expired Location
 Location
+Other
+OTHER(CATH)
+OTHER(GAS-STG)
+
 
 Status:
 Issued
