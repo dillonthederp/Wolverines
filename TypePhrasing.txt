@@ -1,22 +1,31 @@
 Main Things--> ones that I will try to keep the same
 
 Types:
-Gas Wells
-Brine Disposal Wells
-Oil Wells
-Injection Wells
-Water Injection Wells
+Gas Well
+Brine Disposal Well
+Oil Well
+Injection Well
+Water Injection Well
+Shut-in Gas Well
+Oil & Gas
+Gas Orphaned
+Waste Disposal
 
 Status:
 Abandoned
+Orphaned
+Active
+UNABLE TO LOCATE WELL-NO PLUGGED AND ABANDONED
 
 Some types that I found exist, which I can't find an equivalent wording
 
 Types:
 Gas Storage Observation Wells
 Gas Storage (I am assuming they are different since the same state used both phrases)
+Gas Disposal Well
 Coalbed/Pipeline
 Coal Bed
+Coal Bed Methane
 Conversion
 Facilities
 Gas/Pipeline
@@ -24,10 +33,20 @@ Liquified Petroleum Gas Storage
 NAVL (WV)
 No Product Code
 Brine Supply Well
-Dry Gas
 Formation Storage Wells-No Product Designated
 Gas & Condensate Wells Unable To Be Located(No P&A Report)
-Oil Wells Unable To Be Located(No P&A Report)
+Orphan Wells
+Shut-in Productive Wells--Future Utility Oil
+Stratigraphic Test
+ST
+Temporarily Abandoned Wells
+Wells Reverted To Landowner For Fresh Water
+Wells Converted to Oil Or Gas
+Wells Reverted To Single Completion
+Water Source
+Observation
+Expired Location
+Location
 
 Status:
 Issued
@@ -36,4 +55,4 @@ Producer
 Shut In
 Active
 UNABLE TO LOCATE WELL-NO PLUGGED AND ABANDONED
-
+TEMPORARILY ABANDONED WELL
