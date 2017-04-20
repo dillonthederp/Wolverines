@@ -15,6 +15,10 @@ O&G-P&A
 INJ-P&A --> injection well plugged and abandoned
 OIL-P&A
 SWD-P&A
+Oil & Water Inj
+Confidential Hole
+
+
 
 
 
@@ -58,6 +62,9 @@ Location
 Other
 OTHER(CATH)
 OTHER(GAS-STG)
+INTENT
+TA
+SWS
 
 
 Status:
