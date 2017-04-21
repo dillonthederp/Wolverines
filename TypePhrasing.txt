@@ -65,6 +65,16 @@ OTHER(GAS-STG)
 INTENT
 TA
 SWS
+Development
+Dry Wildcat
+Gas Development
+MULTIPLE WELL BORE TYPE
+Monitoring Storage
+Not Listed
+Oil Development
+Service
+UNDETERMINED
+
 
 
 Status:
