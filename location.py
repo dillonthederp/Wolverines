@@ -12,13 +12,19 @@ from collections import defaultdict as dd
 
 lon = [] #Well longitude
 lat = [] #Well latitude
-for i in range(6): #Loops through 7 csv files
+
+for i in range(7): #Loops through 7 csv files
+#before it was doing i in range(5); we have 7 well csv's OK was in wells7.csv
+    
     with open("wells"+str(i+1)+".csv", "rb") as csvfile: #Opens file
         dataset = csv.DictReader(csvfile)
         for row in dataset: #Iterate through dataset
+        
+           
             if (float(row["Longitude"]) > -130 and float(row["Longitude"]) < -40 and float(row["Latitude"]) < 50):
                 lon.append(float(row["Longitude"]))
                 lat.append(float(row["Latitude"]))
+    
 eqlon = [] #Earthquake longitude
 eqlat = [] #Earthquake latitude
 with open ("Earthquakes.csv", "rb") as csvfile:
