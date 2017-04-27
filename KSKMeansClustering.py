@@ -7,6 +7,7 @@ Created on Tue Apr 25 17:50:33 2017
 
 import numpy as np
 from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN as DBS
 from sklearn import datasets
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import pairwise_distances_argmin
@@ -99,42 +100,87 @@ for well in Total:
     lat_long_Data.append([float(well["Latitude"]), float(well["Longitude"])])
     latitudes.append(float(well["Latitude"]))
     longitudes.append(float(well["Longitude"]))
+
+BDW_Cord_Data = []    
+for well in BDW: 
+    BDW_Cord_Data.append([float(well["Latitude"]), float(well["Longitude"])])
+    latitudes.append(float(well["Latitude"]))
+    longitudes.append(float(well["Longitude"]))
 """
 Needed the data to be in a matrix like thing   
    
 """
 Matrix_Lat_Long = np.matrix(lat_long_Data)
+Matrix_BDW = np.matrix(BDW_Cord_Data)
+#print "Matrix: ", Matrix_BDW
 
 
-km = KMeans(n_clusters = 15)
+"""
+Main attempt, attempt with Mean shift next.
+Issue: doing heigharcal and DBS has made our memory go to 100% and crash my laptop.
+trying with a smalled set, BDW
+"""
+"""
+km = DBS(eps = 0.75, min_samples=50)
 km.fit(Matrix_Lat_Long)
 
-centroids = km.cluster_centers_
-dat_label = pairwise_distances_argmin(lat_long_Data, centroids)
+centroids = km.components_
+dat_label = pairwise_distances_argmin(Matrix_Lat_Long, centroids)
 colors = ['b', 'c', 'r', 'g', 'k','y','m','b', 'c', 'r', 'g', 'k','y','g', 'k','y']
 
+print km.components_
+"""
 """
 mems-> the points in the groupings, basically goes through the matrix, and finds the lat and longitude
 and plots them according to color
 """
-for k, col in zip(range(15), colors):
+"""
+for k, col in zip(range(4), colors):
     mems = dat_label == k
     cent = centroids[k]
     plt.plot(Matrix_Lat_Long[mems, 0], Matrix_Lat_Long[mems, 1], 'w', markerfacecolor=col, marker='.')
     plt.plot(cent[0], cent[1], 'o', markerfacecolor=col, markersize = 10)
-
- 
-
+"""
 
 
+
+"""
+------------------------------------------------------------------------------------------------------------------------
+Looking at example from http://scikit-learn.org/stable/auto_examples/cluster/plot_dbscan.html
+Attempt at DBSCAN, not what I was looking for. 
+"""
+"""
+db = DBS(eps=0.1, min_samples=10).fit(Matrix_Lat_Long)
+core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+core_samples_mask[db.core_sample_indices_] = True
+labels = db.labels_
+n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+
+print set(labels)
+
+unique_labels = set(labels)
+colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
+for k, col in zip(unique_labels, colors):
+    if k == -1:
+        # Black used for noise.
+        col = 'k'
+
+    class_member_mask = (labels == k)
+
+    xy = Matrix_Lat_Long[class_member_mask & core_samples_mask]
+    plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+             markeredgecolor='k', markersize=14)
+
+    xy = Matrix_Lat_Long[class_member_mask & ~core_samples_mask]
+    plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+             markeredgecolor='k', markersize=6)
+
+
+plt.show()
+#end of DBSCAN attempt
+----------------------------------------------------------------------------------
     
 """
-#this is the whole map with the colors over top.   
-plt.plot(latitudes, longitudes,'w', markerfacecolor = 'b', marker ='.')
 
-    
-for i in range(8):
-    cent=centroids[i]
-    plt.plot(cent[0], cent[1], 'o', markerfacecolor='y', markersize = 20)
-"""
-plt.show() 
+
+#plt.show() 
