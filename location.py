@@ -16,23 +16,33 @@ from collections import defaultdict as dd
 
 lon = [] #Well longitude
 lat = [] #Well latitude
-    
+l=2010 #Lower bound of date
+u=2015 #Upper bound of date
+
 with open("wellsKS.csv", "rb") as csvfile: #Get wells data
     dataset = csv.DictReader(csvfile)
+    print "Reading Wells data..."
     for row in dataset: #Iterate through dataset
-        if (row["Type"]=="Injection Well"):
-                lon.append(float(row["Longitude"]))
-                lat.append(float(row["Latitude"]))
+        if (row["Type"]=="Injection Well"): #Only gets injection wells
+            ### This makes sure the date is between the lower and upper bounds ###
+            if (l<float(row["Spud Date"][-4:]) <= u): #Checks if date is in desired range
+                lon.append(float(row["Longitude"])) #Add the longitude of the well to list lon
+                lat.append(float(row["Latitude"])) #Add the latidude of the well to list lat
 eqlon = [] #Earthquake longitude
 eqlat = [] #Earthquake latitude
+eqmag= [] #Earthquake magnitude
 with open ("KansasQuakes.csv", "rb") as csvfile: #Get earthquake data
     data = csv.DictReader(csvfile)
+    print "Reading Earthquake data..."
     for row in data:
-        if (float(row["mag"]) >= 3.5): #Filter by magnitude. Change "mag" to another field in the csv to filter by that.
-            eqlon.append(float(row["longitude"]))
-            eqlat.append(float(row["latitude"]))
-
+        if (float(row["mag"]) >= 0 and (u+10) > float(row["time"][:4]) > u): #Filter by magnitude and time
+                                                                        #The the right side of the if-statement 
+                                                                        #checks if the time is in desired range
+            eqlon.append(float(row["longitude"])) #Add the longitude of the quake to the list eqlon
+            eqlat.append(float(row["latitude"])) #Add the latitude of the quake to the list eqlat
+            eqmag.append(float(row["mag"]))
 ### Create the map ###
+print "Creating Basemap..."
 my_map = Basemap(projection='merc', 
                  lat_0=50, lon_0=-100, #Set view angle
               resolution='h', area_thresh=1000.0,
@@ -41,6 +51,7 @@ my_map = Basemap(projection='merc',
                  #urcrnr = "upper-right corner"
                  
 ### Add attributes to the map ###
+print "Drawing outlines and rivers..."
 my_map.drawcounties() #Draws outline of counties
 my_map.drawrivers() #Draws rivers
 my_map.drawcoastlines() #Draws coastlines
@@ -48,14 +59,30 @@ my_map.drawcountries() #Draws outline of countries
 my_map.drawstates() #Draws outline of states
 my_map.fillcontinents(color='coral') #Fills continents with color
 my_map.drawmapboundary() #Draws outline of globe (only visible if you zoom way out)
+
+print "Drawing lat/lon lines..."
 my_map.drawmeridians(np.arange(0, 360, 30)) #Draw longitude lines
 my_map.drawparallels(np.arange(-90, 90, 30)) #Draw latitude lines
-ex,ey = my_map(eqlon, eqlat) #Translate lon,lat coordinates to map coordinates (accounting for curvature?)
+
+print "Converting Coordinates..."
 x,y = my_map(lon, lat) #Translate lon,lat coordinates to map coordinates (accounting for curvature?)
-my_map.plot(x, y, 'bo', markersize=2)
-my_map.plot(ex, ey, 'bo', markersize=3, c="yellow")
-plt.rcParams["figure.figsize"] = [40,10]    #Change size of the figure. Second parameter doesn't matter.
+
+print "Plotting wells..."
+my_map.plot(x, y, 'bo', markersize=2) #Plot well locations
+
+print "Plotting earthquakes..."
+min_marker_size = 2.5 #Smallest size the marker can be
+### This for-loop sizes the earthquake points based on magnitude ###
+for lons, lats, mag in zip(eqlon, eqlat, eqmag): #Notice this for-loop plots each point individually as its size is calculated
+    ex,ey = my_map(lons, lats) #Translate lon,lat coordinates to map coordinates (accounting for curvature?)
+    msize = mag*mag * min_marker_size # msize is the size the markers will be. Notice the formula used to calculate it.
+    my_map.plot(ex, ey, 'ro', markersize=msize, c="yellow") #Plot earthquake location
+
+#my_map.plot(ex, ey, 'bo', markersize=5, c="yellow") #Plot earthquake locations
+plt.rcParams["figure.figsize"] = [30,10]    #Change size of the figure. Second parameter doesn't matter.
                                             #The figure will maintain aspect ratio and scale up with the first parameter as necessary.
+print "ALL DONE!"
+print "Wells from "+str(l)+"-"+str(u)+": " + str(len(lon)) #Prints time window and how many wells were created within it.
 plt.show() #Show the figure
 """
 x = np.arange(0, 5, .1);
