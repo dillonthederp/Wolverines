@@ -19,6 +19,7 @@ lat = [] #Well latitude
     
 with open("wellsKS.csv", "rb") as csvfile: #Get wells data
     dataset = csv.DictReader(csvfile)
+    print "Reading Wells data..."
     for row in dataset: #Iterate through dataset
         if (row["Type"]=="Injection Well"):
                 lon.append(float(row["Longitude"]))
@@ -27,12 +28,14 @@ eqlon = [] #Earthquake longitude
 eqlat = [] #Earthquake latitude
 with open ("KansasQuakes.csv", "rb") as csvfile: #Get earthquake data
     data = csv.DictReader(csvfile)
+    print "Reading Earthquake data..."
     for row in data:
-        if (float(row["mag"]) >= 3.5): #Filter by magnitude. Change "mag" to another field in the csv to filter by that.
+        if (float(row["mag"]) >= 4): #Filter by magnitude. Change "mag" to another field in the csv to filter by that.
             eqlon.append(float(row["longitude"]))
             eqlat.append(float(row["latitude"]))
 
 ### Create the map ###
+print "Creating Basemap..."
 my_map = Basemap(projection='merc', 
                  lat_0=50, lon_0=-100, #Set view angle
               resolution='h', area_thresh=1000.0,
@@ -41,6 +44,7 @@ my_map = Basemap(projection='merc',
                  #urcrnr = "upper-right corner"
                  
 ### Add attributes to the map ###
+print "Adding outlines and rivers..."
 my_map.drawcounties() #Draws outline of counties
 my_map.drawrivers() #Draws rivers
 my_map.drawcoastlines() #Draws coastlines
@@ -48,12 +52,16 @@ my_map.drawcountries() #Draws outline of countries
 my_map.drawstates() #Draws outline of states
 my_map.fillcontinents(color='coral') #Fills continents with color
 my_map.drawmapboundary() #Draws outline of globe (only visible if you zoom way out)
+print "Drawing lat/lon lines..."
 my_map.drawmeridians(np.arange(0, 360, 30)) #Draw longitude lines
 my_map.drawparallels(np.arange(-90, 90, 30)) #Draw latitude lines
+print "Converting Coordinates..."
 ex,ey = my_map(eqlon, eqlat) #Translate lon,lat coordinates to map coordinates (accounting for curvature?)
 x,y = my_map(lon, lat) #Translate lon,lat coordinates to map coordinates (accounting for curvature?)
-my_map.plot(x, y, 'bo', markersize=2)
-my_map.plot(ex, ey, 'bo', markersize=3, c="yellow")
+print "Plotting wells..."
+my_map.plot(x, y, 'bo', markersize=2) #Plot well locations
+print "Plotting earthquakes..."
+my_map.plot(ex, ey, 'bo', markersize=3, c="yellow") #Plot earthquake locations
 plt.rcParams["figure.figsize"] = [40,10]    #Change size of the figure. Second parameter doesn't matter.
                                             #The figure will maintain aspect ratio and scale up with the first parameter as necessary.
 plt.show() #Show the figure
