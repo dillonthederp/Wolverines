@@ -9,5 +9,6 @@ Language and version: Python version 2.7
 
 Additional Packages:
 	Basemap: Download for Windows from https://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.7/
-		 Download for MAC
+		 Download for MAC: Enter in console: pip install https://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.7/
 	NEED INSTRUCTIONS FOR MAC
+
