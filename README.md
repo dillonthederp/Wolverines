@@ -8,4 +8,4 @@ Language and version: Python version 2.7
 
 Additional Packages:
 	Basemap: NEED INSTRUCTIONS FOR MAC
-		Instructions: Go to 
+		Instructions: Enter in console: pip install https://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.7/

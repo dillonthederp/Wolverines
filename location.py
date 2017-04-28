@@ -12,31 +12,21 @@ from mpl_toolkits.basemap import Basemap
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
-from collections import defaultdict as dd
 
 lon = [] #Well longitude
 lat = [] #Well latitude
-i=str(input("Enter values manually? (y/n) ")) #User choice
-while i is not "y" or "n":
-    i=input("Enter values manually? (y/n) ")
-if (i=="n"):
-    l=2000
-    u=2012
-    el=2000
-    eu=2012
-elif (i=="y"):
-    l=int(input("Enter the lower bound year for well spud date: ")) #Lower bound year for wells
-    u=int(input("Enter the upper bound year for well spud date: ")) #Upper bound year for wells
-    el=int(input("Enter the lower bound year for earthquakes: ")) #Lower bound year for earthquakes
-    eu=int(input("Enter the upper bound year for earthquakes: ")) #Upper bound year for earthquakes
 
+l=int(input("Well spud date lower bound (year): ")) #Lower bound year for wells
+u=int(input("Well spud date upper bound (year): ")) #Upper bound year for wells
+el=int(input("Earthquake year lower bound (year): ")) #Lower bound year for earthquakes
+eu=int(input("Earthquake year upper bound (year): ")) #Upper bound year for earthquakes
 with open("wellsKS.csv", "rb") as csvfile: #Get wells data
     dataset = csv.DictReader(csvfile)
     print "Reading Wells data..."
     for row in dataset: #Iterate through dataset
         if (row["Type"]=="Injection Well"): #Only gets injection wells
             ### This makes sure the date is between the lower and upper bounds ###
-            if (l<float(row["Spud Date"][-4:]) <= u): #Checks if date is in desired range
+            if (l<=float(row["Spud Date"][-4:]) <= u): #Checks if date is in desired range
                 lon.append(float(row["Longitude"])) #Add the longitude of the well to list lon
                 lat.append(float(row["Latitude"])) #Add the latidude of the well to list lat
 eqlon = [] #Earthquake longitude
@@ -46,7 +36,7 @@ with open ("KansasQuakes.csv", "rb") as csvfile: #Get earthquake data
     data = csv.DictReader(csvfile)
     print "Reading Earthquake data..."
     for row in data:
-        if (float(row["mag"]) >= 0 and eu >= float(row["time"][:4]) > el): #Filter by magnitude and time
+        if (float(row["mag"]) >= 0 and eu >= float(row["time"][:4]) >= el): #Filter by magnitude and time
                                                                         #The the right side of the if-statement 
                                                                         #checks if the time is in desired range
             eqlon.append(float(row["longitude"])) #Add the longitude of the quake to the list eqlon
@@ -79,27 +69,21 @@ print "Converting Coordinates..."
 x,y = my_map(lon, lat) #Translate lon,lat coordinates to map coordinates (accounting for curvature?)
 
 print "Plotting wells..."
-my_map.plot(x, y, 'bo', markersize=2) #Plot well locations
+my_map.plot(x, y, 'bo', markersize=4) #Plot well locations
 
 print "Plotting earthquakes..."
 min_marker_size = 2.5 #Smallest size the marker can be
 ### This for-loop sizes the earthquake points based on magnitude ###
 for lons, lats, mag in zip(eqlon, eqlat, eqmag): #Notice this for-loop plots each point individually as its size is calculated
     ex,ey = my_map(lons, lats) #Translate lon,lat coordinates to map coordinates (accounting for curvature?)
-    msize = mag*mag * min_marker_size # msize is the size the markers will be. Notice the formula used to calculate it.
+    msize = mag * (mag/2) * min_marker_size # msize is the size the markers will be. Notice the formula used to calculate it.
     my_map.plot(ex, ey, 'ro', markersize=msize, c="yellow") #Plot earthquake location
 
 #my_map.plot(ex, ey, 'bo', markersize=5, c="yellow") #Plot earthquake locations
-plt.rcParams["figure.figsize"] = [20,10]    #Change size of the figure. Second parameter doesn't matter.
+plt.rcParams["figure.figsize"] = [8,4]    #Change size of the figure. Second parameter doesn't matter.
                                             #The figure will maintain aspect ratio and scale up with the first parameter as necessary.
-print "ALL DONE!"
+plt.title("Wells (blue) from "+str(l)+"-"+str(u)+"\n&\nEarthquakes (yellow) from "+str(el)+"-"+str(eu)+" (size indicates magnitude)")
 print "Wells from "+str(l)+"-"+str(u)+": " + str(len(lon)) #Prints time window and how many wells were created within it.
+print "Earthquakes from "+str(el)+"-"+str(eu)+": " + str(len(eqlon))
+print "ALL DONE!"
 plt.show() #Show the figure
-"""
-x = np.arange(0, 5, .1);
-y = np.sin(x)
-x = [1,2,3,3,5,6,7,3,9]
-y = [1,3,4,2,7,8,9,5,4]
-"""
-#plt.plot(x,y)
-#plt.scatter(lon,lat)
