@@ -2,7 +2,8 @@
 
 Members: Jonathan Hunt, Dillon Fitzgerald, Ryan Vreeland, Keegan Barefoot, Will Farren
 
-Project abstract: 
+Project abstract:
+ 
 Fracking has been a subject of controversy since its inception. In this project, we investigate the correlations and 
 causations of earthquakes with regard to the recent increases in fracking activity. Throughout the project, we search
 numerous datasets for the features required in order to formulate useful and sound conclusions regarding the use of 
@@ -14,6 +15,8 @@ data, we then formulate conclusions and make small predictions regarding future 
 density. 
 
 Language and version: Python version 2.7
+
+Additional Packages:
 
 Basemap: Download for Windows from https://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.7/
 		 Download for MAC: Enter in console: pip install https://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.7/
