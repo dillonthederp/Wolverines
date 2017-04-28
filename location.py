@@ -16,8 +16,19 @@ from collections import defaultdict as dd
 
 lon = [] #Well longitude
 lat = [] #Well latitude
-l=2010 #Lower bound of date
-u=2015 #Upper bound of date
+i=str(input("Enter values manually? (y/n) ")) #User choice
+while i is not "y" or "n":
+    i=input("Enter values manually? (y/n) ")
+if (i=="n"):
+    l=2000
+    u=2012
+    el=2000
+    eu=2012
+elif (i=="y"):
+    l=int(input("Enter the lower bound year for well spud date: ")) #Lower bound year for wells
+    u=int(input("Enter the upper bound year for well spud date: ")) #Upper bound year for wells
+    el=int(input("Enter the lower bound year for earthquakes: ")) #Lower bound year for earthquakes
+    eu=int(input("Enter the upper bound year for earthquakes: ")) #Upper bound year for earthquakes
 
 with open("wellsKS.csv", "rb") as csvfile: #Get wells data
     dataset = csv.DictReader(csvfile)
@@ -35,7 +46,7 @@ with open ("KansasQuakes.csv", "rb") as csvfile: #Get earthquake data
     data = csv.DictReader(csvfile)
     print "Reading Earthquake data..."
     for row in data:
-        if (float(row["mag"]) >= 0 and (u+10) > float(row["time"][:4]) > u): #Filter by magnitude and time
+        if (float(row["mag"]) >= 0 and eu >= float(row["time"][:4]) > el): #Filter by magnitude and time
                                                                         #The the right side of the if-statement 
                                                                         #checks if the time is in desired range
             eqlon.append(float(row["longitude"])) #Add the longitude of the quake to the list eqlon
@@ -46,7 +57,7 @@ print "Creating Basemap..."
 my_map = Basemap(projection='merc', 
                  lat_0=50, lon_0=-100, #Set view angle
               resolution='h', area_thresh=1000.0,
-               llcrnrlon=-103, llcrnrlat=36, urcrnrlon=-94, urcrnrlat=41) #Set boundaries of zoom
+               llcrnrlon=-102.3, llcrnrlat=36.5, urcrnrlon=-94.2, urcrnrlat=40.4) #Set boundaries of zoom
                  #llcrnr = "lowerleft corner"
                  #urcrnr = "upper-right corner"
                  
@@ -56,7 +67,7 @@ my_map.drawcounties() #Draws outline of counties
 my_map.drawrivers() #Draws rivers
 my_map.drawcoastlines() #Draws coastlines
 my_map.drawcountries() #Draws outline of countries
-my_map.drawstates() #Draws outline of states
+my_map.drawstates(3) #Draws outline of states
 my_map.fillcontinents(color='coral') #Fills continents with color
 my_map.drawmapboundary() #Draws outline of globe (only visible if you zoom way out)
 
@@ -79,7 +90,7 @@ for lons, lats, mag in zip(eqlon, eqlat, eqmag): #Notice this for-loop plots eac
     my_map.plot(ex, ey, 'ro', markersize=msize, c="yellow") #Plot earthquake location
 
 #my_map.plot(ex, ey, 'bo', markersize=5, c="yellow") #Plot earthquake locations
-plt.rcParams["figure.figsize"] = [30,10]    #Change size of the figure. Second parameter doesn't matter.
+plt.rcParams["figure.figsize"] = [20,10]    #Change size of the figure. Second parameter doesn't matter.
                                             #The figure will maintain aspect ratio and scale up with the first parameter as necessary.
 print "ALL DONE!"
 print "Wells from "+str(l)+"-"+str(u)+": " + str(len(lon)) #Prints time window and how many wells were created within it.
