@@ -1,6 +1,10 @@
-﻿COSC 480 – Data Science for Social Good Major Project
-Will Ferrin *x*
-Jonathan Hunt was here
-Dillon Fitzgerald sweg
-Keegan Barefoot 1
-Ryan Vreeland 2 Test, test, test, maybe it will work...
+﻿Title: Fracking Fraccidents
+Members: Jonathan Hunt, Dillon Fitzgerald, Ryan Vreeland, Keegan Barefoot, Will Farren
+
+Project abstract: (250-500 words) NEEDS TO BE FINISHED
+
+Language and version: Python version 2.7
+
+Additional Packages:
+	Basemap: NEED INSTRUCTIONS FOR MAC
+		Instructions: Go to 
