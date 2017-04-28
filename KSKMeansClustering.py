@@ -8,6 +8,8 @@ Created on Tue Apr 25 17:50:33 2017
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.cluster import DBSCAN as DBS
+from sklearn.cluster import MeanShift as MS
+from sklearn.cluster import estimate_bandwidth
 from sklearn import datasets
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import pairwise_distances_argmin
@@ -119,28 +121,31 @@ Matrix_BDW = np.matrix(BDW_Cord_Data)
 Main attempt, attempt with Mean shift next.
 Issue: doing heigharcal and DBS has made our memory go to 100% and crash my laptop.
 trying with a smalled set, BDW
+Attepting with mean shift, didnt work
+
+K means clustering algorithm
 """
-"""
-km = DBS(eps = 0.75, min_samples=50)
+
+km = KMeans(n_clusters=14)
 km.fit(Matrix_Lat_Long)
 
-centroids = km.components_
-dat_label = pairwise_distances_argmin(Matrix_Lat_Long, centroids)
-colors = ['b', 'c', 'r', 'g', 'k','y','m','b', 'c', 'r', 'g', 'k','y','g', 'k','y']
 
-print km.components_
-"""
+centroids = km.cluster_centers_
+dat_label = pairwise_distances_argmin(Matrix_Lat_Long, centroids)
+colors = ['b', 'c', 'r', 'g', 'k','y','m','b', 'c', 'r', 'g', 'k','y','m']
+
+
+
 """
 mems-> the points in the groupings, basically goes through the matrix, and finds the lat and longitude
 and plots them according to color
 """
-"""
-for k, col in zip(range(4), colors):
+
+for k, col in zip(range(14), colors):
     mems = dat_label == k
     cent = centroids[k]
     plt.plot(Matrix_Lat_Long[mems, 0], Matrix_Lat_Long[mems, 1], 'w', markerfacecolor=col, marker='.')
-    plt.plot(cent[0], cent[1], 'o', markerfacecolor=col, markersize = 10)
-"""
+    plt.plot(cent[0], cent[1], 'o', markerfacecolor=col, markersize = 10) 
 
 
 
